@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flipbook Login & Register</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+    }
+    .book-container {
+      perspective: 2000px;
+      width: 100%;
+      max-width: 900px;
+      height: 500px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .book {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .book.flipped {
+      transform: rotateY(-180deg) rotateX(0deg);
+    }
+    .page {
+      width: 50%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      padding: 2rem;
+      color: white;
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      transition: all 1.2s ease-in-out;
+    }
+    .page.left {
+      left: 0;
+      transform: rotateY(0deg);
+      backface-visibility: hidden;
+      z-index: 2;
+    }
+    .page.right {
+      right: 0;
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+    }
+    .book.flipped .page.left {
+      z-index: 1;
+    }
+    .book.flipped .page.right {
+      z-index: 3;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4">
+  <div class="book-container">
+    <div id="book" class="book">
+      <div class="page left">
+        <h2 class="text-2xl font-bold text-center mb-2">Login</h2>
+        <p class="text-center text-white/80 mb-6">Welcome Back</p>
+        <form class="space-y-5" onsubmit="showMessage(event, 'Have a great day! You are now logged in.')">
+          <input type="text" placeholder="Username" class="w-full px-4 py-2 rounded-lg bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          <input type="password" placeholder="Password" class="w-full px-4 py-2 rounded-lg bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          <button type="submit" class="w-full py-2 bg-pink-300 hover:bg-pink-400 text-black font-semibold rounded-lg transition">Sign In</button>
+        </form>
+        <p class="text-sm text-center mt-6 text-white/80">Don't have an account?
+          <button onclick="flipBook()" class="text-pink-200 underline">Register</button>
+        </p>
+      </div>
+
+      <div class="page right">
+        <h2 class="text-2xl font-bold text-center mb-2">Register</h2>
+        <p class="text-center text-white/80 mb-6">Create your account</p>
+        <form class="space-y-5" onsubmit="showMessage(event, 'Account created! Have a wonderful journey.')">
+          <input type="text" placeholder="Username" class="w-full px-4 py-2 rounded-lg bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          <input type="email" placeholder="Email" class="w-full px-4 py-2 rounded-lg bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          <input type="password" placeholder="Password" class="w-full px-4 py-2 rounded-lg bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          <button type="submit" class="w-full py-2 bg-pink-300 hover:bg-pink-400 text-black font-semibold rounded-lg transition">Sign Up</button>
+        </form>
+        <p class="text-sm text-center mt-6 text-white/80">Already have an account?
+          <button onclick="flipBook()" class="text-pink-200 underline">Login</button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <div id="messageModal" class="fixed inset-0 flex items-center justify-center bg-black/50 z-50 hidden">
+    <div class="bg-white text-black px-6 py-4 rounded-lg shadow-lg text-center">
+      <p id="messageText" class="mb-4 font-semibold text-lg"></p>
+      <button onclick="closeMessage()" class="bg-pink-400 px-4 py-2 rounded text-white hover:bg-pink-500">OK</button>
+    </div>
+  </div>
+
+  <script>
+    function flipBook() {
+      const book = document.getElementById('book');
+      book.classList.toggle('flipped');
+    }
+
+    function showMessage(event, message) {
+      event.preventDefault();
+      document.getElementById('messageText').innerText = message;
+      document.getElementById('messageModal').classList.remove('hidden');
+    }
+
+    function closeMessage() {
+      document.getElementById('messageModal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
